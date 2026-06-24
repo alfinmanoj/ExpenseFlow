@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseFlow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <main class="app">
+
+        <header class="app-header">
+            <h1>ExpenseFlow</h1>
+            <p>Track Every Rupee With Confidence</p>
+        </header>
+
+        <section class="summary-section">
+
+            <div class="summary-card">
+                <h3>Income </h3>
+                <p id="incomeValue">0</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Expense </h3>
+                <p id="expenseValue">0</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Balance </h3>
+                <p id="balanceValue">0</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Transactions </h3>
+                <p id="transactionsValue">0</p>
+            </div>
+
+        </section>
+
+        <section class="dashboard-section">
+
+            <div class="form-container">
+
+                <h3 id="formHead">Add Transaction</h3>
+
+                <form id="transactionForm">
+
+                    <div class="form-group">
+                        <label for="descriptionInput">Description</label>
+                        <input type="text"  id="descriptionInput" placeholder="Enter your description ">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amountInput">Amount</label>
+                        <input type="number"  id="amountInput" placeholder="Enter an Amount">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="typeSelect">Type</label>
+                        <select id="typeSelect">
+                            <option value="">Select Type</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categorySelect">Category</label>
+                        <select id="categorySelect">
+                            <option value="">Select Category</option>
+                            <option value="salary">Salary</option>
+                            <option value="food">Food</option>
+                            <option value="travel">Travel</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="bills">Bills</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateInput">Transaction Date</label>
+                        <input type="date" id="dateInput">
+                    </div>
+
+                    <button type="submit" id="submitBtn">Submit</button>
+
+                </form>
+            </div>
+
+
+            <div class="transaction-panel">
+
+                <h2>Transactions</h2>
+
+                <div class="filter-container">
+                    <input type="text" id="searchTransaction" placeholder="Search transactions">
+
+                    <select id="filterCategory">
+                        <option value="">All Categories</option>
+                        <option value="salary">Salary</option>
+                        <option value="food">Food</option>
+                        <option value="travel">Travel</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="bills">Bills</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+
+
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+
+                    <select id="sort">
+                        <option value="">All Transactions</option>
+                        <option value="latest">Latest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="highest">Highest</option>
+                        <option value="lowest">Lowest</option>
+                    </select>
+                </div>
+
+                <div class="transaction-items">
+                    <div class="transaction-card">
+
+                        <div class="transaction-info">
+                            <!-- icon -->
+                             <p>🍔</p>
+                            <div class="transaction-meta">
+                                <!-- description -->
+                                <p class="description">Lunch at Restaurant</p>
+                                <!-- Type -->
+                                <p class="type">Food • Expense</p>
+
+                                <!-- Date -->
+                                <p class="date">23 Jun 2026</p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Amount -->
+                        <p class="amount">-₹500</p>
+
+
+                        <div class="transaction-action">
+                            <!-- Edit Button -->
+                            <button class="edit-btn">Edit</button>
+
+                            <!-- Delete Button -->
+                            <button class="delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state">
+                    <h3>No transactions yet</h3>
+                    <p>Add your first transaction.</p>
+                </div>
+            </div>
+        </section>   
+    </main>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
