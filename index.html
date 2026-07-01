@@ -56,28 +56,30 @@
                         <label for="amountInput">Amount</label>
                         <input type="number"  id="amountInput" placeholder="Enter an Amount">
                     </div>
+                    <div class="form-row">
 
-                    <div class="form-group">
-                        <label for="typeSelect">Type</label>
-                        <select id="typeSelect">
-                            <option value="">Select Type</option>
-                            <option value="income">Income</option>
-                            <option value="expense">Expense</option>
-                        </select>
-                    </div>
+                        <div class="form-group type-group" >
+                            <label for="typeSelect">Type</label>
+                            <select id="typeSelect">
+                                <option value="">Select Type</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="categorySelect">Category</label>
-                        <select id="categorySelect">
-                            <option value="">Select Category</option>
-                            <option value="salary">Salary</option>
-                            <option value="food">Food</option>
-                            <option value="travel">Travel</option>
-                            <option value="shopping">Shopping</option>
-                            <option value="bills">Bills</option>
-                            <option value="entertainment">Entertainment</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <div class="form-group category-group">
+                            <label for="categorySelect">Category</label>
+                            <select id="categorySelect">
+                                <option value="">Select Category</option>
+                                <option value="salary">Salary</option>
+                                <option value="food">Food</option>
+                                <option value="travel">Travel</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="bills">Bills</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -96,7 +98,9 @@
                 <h2>Transactions</h2>
 
                 <div class="filter-container">
+
                     <input type="text" id="searchTransaction" placeholder="Search transactions">
+                    
 
                     <select id="filterCategory">
                         <option value="">All Categories</option>
@@ -143,17 +147,19 @@
                             </div>
 
                         </div>
+                        <div class="transaction-right">
 
-                        <!-- Amount -->
-                        <p class="amount">-₹500</p>
+                            <!-- Amount -->
+                            <p class="amount">-₹500</p>
 
 
-                        <div class="transaction-action">
-                            <!-- Edit Button -->
-                            <button class="edit-btn">Edit</button>
+                            <div class="transaction-action">
+                                <!-- Edit Button -->
+                                <button class="edit-btn">Edit</button>
 
-                            <!-- Delete Button -->
-                            <button class="delete-btn">Delete</button>
+                                <!-- Delete Button -->
+                                <button class="delete-btn">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,7 +171,6 @@
             </div>
         </section>   
     </main>
-
 
     <script src="script.js"></script>
 </body>
