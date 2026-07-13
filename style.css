@@ -356,6 +356,8 @@ body {
 /* Empty State */
 
 .empty-state {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     padding: var(--space-md);
     border: 1px solid var(--border-color);
