@@ -37,42 +37,7 @@ const categoryIcons = {
     other: "📦"
 };
 
-//events
 
-transactionForm.addEventListener("submit", (e)=> {
-
-    e.preventDefault();
-
-    const cleanedDescription = descriptionInput.value.trim();
-    const realAmount = Number(amountInput.value);
-
-
-    if (!cleanedDescription ||!realAmount || !typeSelect.value || !categorySelect.value || !dateInput.value) {
-        return;
-    }
-
-    const type = typeSelect.value;
-    const category = categorySelect.value;
-    const date = dateInput.value;
-
-    const transactionObj = {
-            description : cleanedDescription,
-            amount : realAmount ,
-            type ,
-            category,
-            date  
-        }
-
-        transactions.push(transactionObj);
-
-        saveTransactions();
-
-        //reset form 
-
-        transactionForm.reset();
-
-        renderTransactions();
-})
 
 
 //functions 
@@ -151,7 +116,9 @@ function renderTransactions() {
 
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.classList.add("delete-btn");
+        //deleteBtn.setAttribute("data-transaction-id", transaction.id);
+        deleteBtn.dataset.transactionId = transaction.id;
+        deleteBtn.classList.add("delete-btn"); 
         deleteBtn.textContent = "Delete";
 
 
@@ -172,6 +139,8 @@ function renderTransactions() {
     }
     updateSummary();
 }
+
+// summary cards
 
 function updateSummary () {
 
@@ -204,6 +173,8 @@ function updateSummary () {
 }
 
 
+// local storage
+
 function saveTransactions () {
     const jsonStringArr =  JSON.stringify(transactions);
     localStorage.setItem("transactions", jsonStringArr);
@@ -222,3 +193,62 @@ function loadTransactions () {
 //initial rendering
 
 loadTransactions();
+
+
+//events
+
+transactionForm.addEventListener("submit", (e)=> {
+
+    e.preventDefault();
+
+    const cleanedDescription = descriptionInput.value.trim();
+    const realAmount = Number(amountInput.value);
+
+
+    if (!cleanedDescription ||!realAmount || !typeSelect.value || !categorySelect.value || !dateInput.value) {
+        return;
+    }
+
+    const type = typeSelect.value;
+    const category = categorySelect.value;
+    const date = dateInput.value;
+
+    const transactionObj = {
+
+        id : crypto.randomUUID(),
+        description : cleanedDescription,
+        amount : realAmount ,
+        type ,
+        category,
+        date  
+    }
+
+    transactions.push(transactionObj);
+
+    saveTransactions();
+
+    //reset form 
+
+    transactionForm.reset();
+
+    renderTransactions();
+})
+
+//delete task event
+
+transactionItems.addEventListener("click", (e)=> {
+
+    if(!e.target.classList.contains("delete-btn")) {
+        return;
+    }
+
+    //const transactionId = e.target.getAttribute("data-transaction-id");
+    const transactionId = e.target.dataset.transactionId;
+
+    transactions = transactions.filter((transaction)=> transaction.id !== transactionId);
+
+    saveTransactions();
+
+    renderTransactions ();
+
+})
