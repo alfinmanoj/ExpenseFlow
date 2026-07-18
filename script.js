@@ -8,6 +8,8 @@ const typeSelect = document.getElementById("typeSelect");
 const categorySelect = document.getElementById("categorySelect");
 const dateInput = document.getElementById("dateInput");
 
+const submitBtn = document.getElementById("submitBtn");
+
 const transactionItems = document.querySelector(".transaction-items");
 
 //summary
@@ -25,6 +27,9 @@ const emptyStateText = document.querySelector(".empty-state p");
 
 let transactions = [];
 
+let editingTransactionId = null;
+
+
 // Constants
 
 const categoryIcons = {
@@ -36,9 +41,6 @@ const categoryIcons = {
     entertainment: "🎬",
     other: "📦"
 };
-
-
-
 
 //functions 
 
@@ -110,13 +112,13 @@ function renderTransactions() {
 
 
         const editBtn = document.createElement("button");
+        editBtn.dataset.transactionId = transaction.id;
         editBtn.classList.add("edit-btn");
         editBtn.textContent = "Edit";
 
 
 
         const deleteBtn = document.createElement("button");
-        //deleteBtn.setAttribute("data-transaction-id", transaction.id);
         deleteBtn.dataset.transactionId = transaction.id;
         deleteBtn.classList.add("delete-btn"); 
         deleteBtn.textContent = "Delete";
@@ -213,17 +215,36 @@ transactionForm.addEventListener("submit", (e)=> {
     const category = categorySelect.value;
     const date = dateInput.value;
 
-    const transactionObj = {
+    if (editingTransactionId !== null) {
 
-        id : crypto.randomUUID(),
-        description : cleanedDescription,
-        amount : realAmount ,
-        type ,
-        category,
-        date  
+        const particularTransaction = transactions.find((element)=> element.id === editingTransactionId);
+
+
+        particularTransaction.description = cleanedDescription;
+        particularTransaction.amount = realAmount;
+        particularTransaction.type = type;
+        particularTransaction.category = category;
+        particularTransaction.date = date;
+
+        editingTransactionId = null;
+        submitBtn.textContent = "Submit";
+        
+    }else {
+
+        const transactionObj = {
+
+            id : crypto.randomUUID(),
+            description : cleanedDescription,
+            amount : realAmount ,
+            type ,
+            category,
+            date  
+        }
+
+        transactions.push(transactionObj);
     }
 
-    transactions.push(transactionObj);
+    
 
     saveTransactions();
 
@@ -234,7 +255,7 @@ transactionForm.addEventListener("submit", (e)=> {
     renderTransactions();
 })
 
-//delete task event
+//delete transaction event
 
 transactionItems.addEventListener("click", (e)=> {
 
@@ -242,8 +263,13 @@ transactionItems.addEventListener("click", (e)=> {
         return;
     }
 
-    //const transactionId = e.target.getAttribute("data-transaction-id");
     const transactionId = e.target.dataset.transactionId;
+
+    if (transactionId === editingTransactionId) {
+        transactionForm.reset();
+        editingTransactionId = null;
+        submitBtn.textContent = "Submit";
+    }
 
     transactions = transactions.filter((transaction)=> transaction.id !== transactionId);
 
@@ -252,3 +278,28 @@ transactionItems.addEventListener("click", (e)=> {
     renderTransactions ();
 
 })
+
+//edit transaction event
+
+transactionItems.addEventListener("click", (e)=> {
+
+    if (!e.target.classList.contains("edit-btn")) {
+        return;
+    }
+
+    const transactionId = e.target.dataset.transactionId;
+
+    const particularTransaction = transactions.find((element)=> element.id === transactionId);
+
+    descriptionInput.value = particularTransaction.description;
+    amountInput.value = particularTransaction.amount;
+    typeSelect.value = particularTransaction.type;
+    categorySelect.value = particularTransaction.category;
+    dateInput.value = particularTransaction.date;
+
+    editingTransactionId = transactionId;
+
+    submitBtn.textContent = "Update";
+})
+
+
