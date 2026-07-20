@@ -10,6 +10,7 @@ const dateInput = document.getElementById("dateInput");
 
 const submitBtn = document.getElementById("submitBtn");
 
+//transaction card 
 const transactionItems = document.querySelector(".transaction-items");
 
 //summary
@@ -19,6 +20,14 @@ const expenseValue = document.getElementById("expenseValue");
 const balanceValue = document.getElementById("balanceValue");
 const transactionsValue = document.getElementById("transactionsValue");
 
+// search / filter
+
+const searchTransaction = document.getElementById("searchTransaction");
+const categoryFilter = document.getElementById("filterCategory");
+const typeFilter = document.getElementById("typeFilter");
+const sort = document.getElementById("sort");
+
+// empty
 const emptyState = document.querySelector(".empty-state");
 const emptyStateTitle = document.querySelector(".empty-state h3");
 const emptyStateText = document.querySelector(".empty-state p");
@@ -28,6 +37,14 @@ const emptyStateText = document.querySelector(".empty-state p");
 let transactions = [];
 
 let editingTransactionId = null;
+
+let searchTerm = "";
+
+let filterCategory = "";
+
+let filterType = "";
+
+let sortOption = "";
 
 
 // Constants
@@ -48,18 +65,61 @@ function renderTransactions() {
 
     transactionItems.innerHTML = "";
 
+    let finalFilteredArr;
+
+    const filteredTransactions = transactions.filter((item)=>item.description.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    finalFilteredArr = filteredTransactions;
+
+    if (filterCategory !== "") {
+
+        finalFilteredArr = finalFilteredArr.filter((item)=> item.category === filterCategory);
+
+    }
+    
+
+    if (filterType !== "") {
+
+        finalFilteredArr = finalFilteredArr.filter((item)=> item.type === filterType);
+    }
+
+
+    if (sortOption === "highest") {
+
+        finalFilteredArr.sort((a, b) => b.amount - a.amount);
+
+    }else if (sortOption === "lowest") {
+
+        finalFilteredArr.sort((a, b) => a.amount - b.amount);
+
+    }else if (sortOption === "oldest") {
+
+        finalFilteredArr.sort((a, b) =>new Date(a.date) - new Date(b.date));
+
+    }else if (sortOption === "latest") {
+
+        finalFilteredArr.sort((a, b) =>new Date(b.date) - new Date(a.date));
+    }
+
+
     if(transactions.length === 0) {
 
         emptyState.style.display = "flex";
 
         emptyStateTitle.textContent = "No transactions yet.";
         emptyStateText.textContent = "Add your first transaction.";
-    }else {
 
+    }else if (finalFilteredArr.length === 0) {
+
+        emptyState.style.display = "flex";
+
+        emptyStateTitle.textContent = "No matching transactions found.";
+        emptyStateText.textContent = "Try a different search term.";
+    }else {
         emptyState.style.display = "none";
     }
 
-    for(let transaction of transactions) {
+    for(let transaction of finalFilteredArr) {
 
         const transactionCard = document.createElement("div");
         transactionCard.classList.add("transaction-card");
@@ -139,14 +199,14 @@ function renderTransactions() {
         transactionItems.appendChild(transactionCard);
 
     }
-    updateSummary();
+    updateSummary(finalFilteredArr);
 }
 
 // summary cards
 
-function updateSummary () {
+function updateSummary (transactionsToSummarize) {
 
-     const totalIncome = transactions.reduce ((acc, transaction)=>{
+     const totalIncome = transactionsToSummarize.reduce ((acc, transaction)=>{
         if (transaction.type === "income") {
             return acc + transaction.amount;
         }
@@ -156,7 +216,8 @@ function updateSummary () {
 
     incomeValue.textContent = totalIncome;
 
-    const totalExpense = transactions.reduce ((acc, transaction)=>{
+
+    const totalExpense = transactionsToSummarize.reduce ((acc, transaction)=>{
         if (transaction.type === "expense") {
            return acc + transaction.amount;
         }
@@ -170,7 +231,7 @@ function updateSummary () {
     const balance = totalIncome - totalExpense;
     balanceValue.textContent = balance;
 
-    const totalTransactions = transactions.length;
+    const totalTransactions = transactionsToSummarize.length;
     transactionsValue.textContent = totalTransactions;
 }
 
@@ -301,5 +362,39 @@ transactionItems.addEventListener("click", (e)=> {
 
     submitBtn.textContent = "Update";
 })
+
+
+// search transaction
+
+searchTransaction.addEventListener("input", (e)=> {
+
+    searchTerm = e.target.value.trim();
+
+    renderTransactions();
+});
+
+// filter transaction category 
+
+categoryFilter.addEventListener("change",(e)=>{
+    filterCategory = e.target.value;
+
+    renderTransactions();
+});
+
+// filter transaction type 
+
+typeFilter.addEventListener("change", (e)=>{
+    filterType = e.target.value;
+
+    renderTransactions();
+});
+
+
+sort.addEventListener("change", (e)=> {
+    sortOption = e.target.value;
+
+    renderTransactions();
+});
+
 
 
