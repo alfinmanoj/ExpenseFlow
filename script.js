@@ -59,6 +59,22 @@ const categoryIcons = {
     other: "📦"
 };
 
+
+const currencyFormatter = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0
+});
+
+
+const dateFormatter = new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+});
+
+
+
 //functions 
 
 function renderTransactions() {
@@ -148,7 +164,7 @@ function renderTransactions() {
 
         const transactionDate = document.createElement("p");
         transactionDate.classList.add("date");
-        transactionDate.textContent = transaction.date;
+        transactionDate.textContent = dateFormatter.format(new Date(transaction.date));
 
 
         const transactionRight = document.createElement("div");
@@ -159,11 +175,11 @@ function renderTransactions() {
         
         if (transaction.type === "income") {
             transactionAmount.classList.add("income");
-            transactionAmount.textContent = `+₹${transaction.amount}`;
+            transactionAmount.textContent = `+${currencyFormatter.format(transaction.amount)}`;
 
         }else {
             transactionAmount.classList.add("expense");
-            transactionAmount.textContent = `-₹${transaction.amount}`;
+            transactionAmount.textContent = `-${currencyFormatter.format(transaction.amount)}`;
 
         }
 
@@ -214,7 +230,8 @@ function updateSummary (transactionsToSummarize) {
         
     }, 0);
 
-    incomeValue.textContent = totalIncome;
+    
+    incomeValue.textContent = currencyFormatter.format(totalIncome);
 
 
     const totalExpense = transactionsToSummarize.reduce ((acc, transaction)=>{
@@ -226,10 +243,10 @@ function updateSummary (transactionsToSummarize) {
     }, 0);
 
     
-    expenseValue.textContent = totalExpense;
+    expenseValue.textContent = currencyFormatter.format(totalExpense);
 
     const balance = totalIncome - totalExpense;
-    balanceValue.textContent = balance;
+    balanceValue.textContent = currencyFormatter.format(balance);
 
     const totalTransactions = transactionsToSummarize.length;
     transactionsValue.textContent = totalTransactions;
